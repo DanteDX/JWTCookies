@@ -15,5 +15,18 @@ const userSchema = new mongoose.Schema({
 	},
 });
 
+// this function is fired after saving user to the database, post-save
+userSchema.post('save',function(doc,next){
+	console.log('New user was created',doc);
+	next();
+})
+// this function is fired before saving user to the database, pre-save
+userSchema.pre('save',function(next){
+	console.log('The user is about to be created and saved',this);
+	next();
+})
+/* the plan is to hash the password with bcryptJS before
+saving the password to the database */
+
 const User = mongoose.model('user', userSchema);
 module.exports = User;
