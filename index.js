@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require("mongoose");
 const app = express();
 app.use(express.static('public'));
+app.use(express.json());
 app.set('view engine', 'ejs');
 mongoose.connect(process.env.MONGODB_URI,{ 
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true 
@@ -18,3 +19,4 @@ mongoose.connect(process.env.MONGODB_URI,{
 
 app.use('/post',require('./routes/postRoutes'));
 app.use('/comment',require('./routes/commentRoutes'));
+app.use('/user',require("./routes/userRoutes"));
