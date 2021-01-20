@@ -1,0 +1,12 @@
+{
+    "driver": true,
+    "name": "MongoError",
+    "index": 0,
+    "code": 11000,
+    "keyPattern": {
+        "email": 1
+    },
+    "keyValue": {
+        "email": "sheldon@sheldon.com"
+    }
+}

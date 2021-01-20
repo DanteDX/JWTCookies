@@ -1,0 +1,32 @@
+{
+    "errors": {
+        "email": {
+            "name": "ValidatorError",
+            "message": "Please enter an email",
+            "properties": {
+                "message": "Please enter an email",
+                "type": "required",
+                "path": "email",
+                "value": ""
+            },
+            "kind": "required",
+            "path": "email",
+            "value": ""
+        },
+        "password": {
+            "name": "ValidatorError",
+            "message": "Please enter a password",
+            "properties": {
+                "message": "Please enter a password",
+                "type": "required",
+                "path": "password",
+                "value": ""
+            },
+            "kind": "required",
+            "path": "password",
+            "value": ""
+        }
+    },
+    "_message": "user validation failed",
+    "message": "user validation failed: email: Please enter an email, password: Please enter a password"
+}
