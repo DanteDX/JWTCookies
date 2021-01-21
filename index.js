@@ -1,4 +1,6 @@
 require('dotenv').config();
+const User = require("./models/User");
+const bcrypt = require("bcrypt");
 const express = require('express');
 const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
@@ -75,6 +77,32 @@ app.get('/query',(req,res)=>{
     res.cookie('jwtToken',jwtToken,{maxAge:70*1000});
     res.json({jwtToken,payload});
 });
+
+app.get('/verify/:email/:password',async (req,res) =>{
+    const email = req.params.email;
+    const password = req.params.password;
+    const payload = {email,password};
+    try{
+        const user = await User.findOne({email});
+        console.log(user);
+        if(!user){
+            res.status(400).send('No user exist on that email');
+        }
+        if(user){
+            let auth = await bcrypt.compare(password,user.password);
+            console.log(auth);
+            if(auth){
+                let jwtToken = await jwt.sign(payload,process.env.jwtSecret,{expiresIn:70});
+                res.cookie('jwtToken',jwtToken,{maxAge:30000});
+                res.status(201).json({user,jwtToken});
+            }else if(!auth){
+                res.status(400).send('Invalid Credentials');
+            }
+        }
+    }catch(err){
+        res.status(400).send(err);
+    }
+})
 
 app.use('/post',require('./routes/postRoutes'));
 app.use('/comment',require('./routes/commentRoutes'));
