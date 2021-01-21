@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const app = express();
 app.use(express.static('public'));
 app.use(cookieParser());
@@ -36,6 +37,38 @@ app.get('/getCookies',(req,res)=>{
     const cookies = req.cookies;
     console.log(cookies);
     res.json(cookies);
+});
+
+app.get('/register/:email/:password',(req,res)=>{
+    if(!req.params.email){
+        res.send('Email is required');
+    }else if(!req.params.password){
+        res.send('Password is required');
+    }
+    const email = req.params.email;
+    const password = req.params.password;
+    const payload = {email,password};
+    const jwtToken = jwt.sign(payload,process.env.jwtSecret,{
+        expiresIn:70
+    });
+    res.cookie('jwtToken',jwtToken,{maxAge:70*1000});
+    res.json({jwtToken});
+});
+
+app.get('/query',(req,res)=>{
+    if(!req.query.email){
+        res.send('Email is required');
+    }else if(!req.query.password){
+        res.send('Password is required');
+    }
+    const email = req.query.email;
+    const password = req.query.password;
+    const payload = {email,password};
+    const jwtToken = jwt.sign(payload,process.env.jwtSecret,{
+        expiresIn:70
+    });
+    res.cookie('jwtToken',jwtToken,{maxAge:70*1000});
+    res.json({jwtToken,payload});
 });
 
 app.use('/post',require('./routes/postRoutes'));
