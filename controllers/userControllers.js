@@ -20,8 +20,9 @@ const createUser = async (req,res) =>{
         let user = await User.create({email,password});
         res.status(200).json(user);
     }catch(err){
-        const errors = handleErrors(err);
-        res.status(400).json({errors});
+        // const errors = handleErrors(err);
+        console.log(err);
+        res.status(400).json({err});
     }
 }
 
