@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const {isEmail} = require('validator');
+const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
 	email: {
 		type: String,
@@ -21,8 +22,11 @@ userSchema.post('save',function(doc,next){
 	next();
 })
 // this function is fired before saving user to the database, pre-save
-userSchema.pre('save',function(next){
-	console.log('The user is about to be created and saved',this);
+userSchema.pre('save',async function(next){
+	console.log("Before hashing password",this);
+	const salt = await bcrypt.genSalt();
+	this.password = await bcrypt.hash(this.password,salt);
+	console.log('After hashing password',this);
 	next();
 })
 /* the plan is to hash the password with bcryptJS before
