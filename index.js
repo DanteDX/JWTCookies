@@ -55,6 +55,11 @@ app.get('/register/:email/:password',(req,res)=>{
     res.json({jwtToken});
 });
 
+app.get("/clearCookir",function(req,res){
+    res.clearCookie('jwtToken');
+    res.json({cookies:req.cookies});
+});
+
 app.get('/query',(req,res)=>{
     if(!req.query.email){
         res.send('Email is required');
