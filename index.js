@@ -6,10 +6,12 @@ const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
+const authMiddleWare = require('./middlewares/authMiddleWare');
 app.use(express.static('public'));
 app.use(cookieParser());
 app.use(express.json());
 app.set('view engine', 'ejs');
+
 
 
 mongoose.connect(process.env.MONGODB_URI,{ 
@@ -26,6 +28,14 @@ mongoose.connect(process.env.MONGODB_URI,{
 
 app.get('/',(req,res)=>{
     res.send('Welcome to the home page');
+})
+
+app.get('/protected',authMiddleWare,(req,res) =>{
+    if(req.decodedToken){
+        res.send(req.decodedToken);
+    }else{
+        res.send('no decodedToken');
+    }
 })
 
 app.get('/setCookies',(req,res) =>{
